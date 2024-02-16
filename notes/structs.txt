@@ -1,0 +1,37 @@
+house analogy:
+	house = peripherals
+	rooms = registers
+
+Now the house is going to be a structure and all the rooms are the members
+
+in reference manual:
+	- find GPIO registers
+	GPIO registers
+	- there are 10 different types listed
+	- make a struct with 10 members
+	- order needs to be maintain for the offset 
+	- each register is 32 bit in size meaning each register will occupy 4 bytes in memory (8X4 = 32)
+	- hence each register is split in 4 byte addresses
+	
+			// This notation allows for double underscore
+			#define __IO				volatile
+			typedef struct 
+			{
+				__IO uint32_t MODER; 	// GPIO port mode register					Address Offset: 0x00
+				__IO uint32_t OTYPER;	// GPIO port output type register			Address Offset: 0x04
+				__IO uint32_t OSPEEDR;	// GPIO port output speed register			Address Offset: 0x08
+				__IO uint32_t PUPDR;	// GPIO port pull-up/pull-down register		Address Offset: 0x0C
+				__IO uint32_t IDR;		// GPIO port input data register			Address Offset: 0x10
+				__IO uint32_t ODR;		// GPIO port output data register			Address Offset: 0x14
+				__IO uint32_t BSRR;		// GPIO port bit set/reset register			Address Offset: 0x18
+				__IO uint32_t LCKR;		// GPIO port configuration lock register	Address Offset: 0x1C
+				__IO uint32_t AFR[2];	// GPIO alternate function registers		Address Offset: 0x20-0x24
+
+			} GPIO_TypeDef;
+	- we just want moder and odr  but need the address to be in place so make dummy vals
+
+
+	RCC registers
+	- only need 1 out of 21: AHB1ENR Address offset: 0x30
+	- need to type cast RCC to GPIO so that it can can be an accesible register
+	- RCC -> is a pointer to all the members in the class/struct

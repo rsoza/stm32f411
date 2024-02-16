@@ -1,0 +1,59 @@
+Universal Asynchronous Reveiver/Transmitter (UART)
+
+Parallel communication
+- 8 bit data is transferred the same time
+
+Searial communication
+- 8 bit data is transferred one bit at a time
+- UART is a serial communication device
+- uses two methods:
+	1. synchronous:
+		> clock is transmitted with data
+	2. asynchronous
+		> not clock is transmitted
+		> baudrate: transmitter and receiver agree on the clock speed for the data transmission
+			need to figure out the clock rate for both
+				- connection speed expressed in bits per second
+			
+USART: Universal synchronous asynchronous receiver/transmitter
+
+Transmission Modes:
+specifies whether RX or TX mode is enabled or disabled
+1. Duplex: data can be transmitted and received
+2. Simplex: Data can be transmitted only or received only; one direction
+3. half duplex: data can be transmitted in only one way at a time
+4. full duplex: data can be transmitted in both ways at a time
+
+
+Protocol Summary:
+
+in asynchronous transmission each byte (character) is packed between start and stop bits
+
+- Start bit = 1 bit; the value of is alway 0
+- Stop bit: can be 1 or 2 bits; value is always 1
+
+allow the communication protocol to know where it starts and stop
+
+Configuration Parameters:
+- Baudrate
+- Stop bit
+- Parity: indicates even or odd for error checking
+- mode
+- Word lenth: specifies the number of data transmitted or received can by 8 or 9 bits
+- Hardware flow control: specifies whether hardware flow control is enabled or disabled
+
+
+
+
+
+
+CODDDINGGG::: 5_uart_tx
+
+- stm32 has a USART found in the block diagram in datasheet
+- USART2 will be the one we use because it is connected to the USB having a RX and TX pin
+- USART2 is conencted to the APB1 bus
+- in reference manual look for APB1ENR 
+- in datasheet look for alternate function mapping
+	> this lists all the port and pins that can be traced
+	> here we find the USART_TX we need to enable PA2 under column AF07 which needs to be configured to an alternate function mode: AF07
+- go to control regist 1 for USART_CR1 to set configurations in ref manual

@@ -1,0 +1,10 @@
+C:/Users/rsoza/Documents/coding/c++/stm32/Workshop/F4_chip_headers/CMSIS/Include/core_cm4.h:1688:22:__NVIC_EnableIRQ	16	static
+../Src/uart.c:29:5:__io_putchar	16	static
+../Src/uart.c:36:6:uart2_rx_interrupt_init	8	static
+../Src/uart.c:91:6:uart2_tx_interrupt_init	8	static
+../Src/uart.c:146:6:uart2_rxtx_init	8	static
+../Src/uart.c:185:6:uart2_tx_init	8	static
+../Src/uart.c:226:6:uart2_read	4	static
+../Src/uart.c:236:6:uart2_write	16	static
+../Src/uart.c:254:13:uart_set_baudrate	24	static
+../Src/uart.c:259:17:compute_uart_bd	16	static

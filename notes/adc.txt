@@ -1,0 +1,59 @@
+Analog-to-digital converter (ADC)
+	- widely used devices for data acquisition
+	- ex temp, velocity, 
+	- converts physical quantity to electrical signals using a transducer (voltage or current)
+
+
+ADC has n bit resolution
+	- 8, 10, 12, 16 bit
+	- higher resolution ADC has smaller step size
+	- step size is the smallest change that can be detected by an ADC
+	- ex 8bit = 256 steps = 5v/256 =19.53mV step size
+				5v = reference voltage
+
+
+ADC Independent Modes:
+	- Single-channel, single conversion mode	
+		> simplest ADC mode
+		> ADV performs a single connversion of a single channel x and stops after conversion is complete
+		> start -> convert channel -> stop
+		> measurement of voltage level to determine if a system should start or not
+		> needs to be checked once
+		
+	- Multichannel(scan), single conversion mode
+		> used to convert multiple channels successively
+		> up tp 16 different channels with different sampling times can be convertered on the STM32F4
+		> start-> sample x -> convert channel -> stop
+		> measurement of multiple sensors to determine whether a system should start or not
+		
+	- Single-channel continuous conversaion mode
+		> used to convert a single channel continuously
+		> works in the background without intervention from the CPU
+		> measurement of temp to continuously adjust the temp appropriately
+		> start -> convert channel -> start
+		> measurement of room temp continuously to adjust air-conditioner
+		
+	- Multichannel continuous conversion mode
+		> used to convert multiple channels continuously
+		> up to 16 different channels with different sampling times can be converted on the ATM32F4
+		> countinuously measuring multiple accelerometers to adjust joints of a robotic arm.
+	
+	- Injected continuous conversion mode
+		> intended for use when conversion is triggered by an external event or by software
+		> for synchronizing the conversion of channels to an event
+		> the injected conversion mode interrupts the current moode
+		> not as popular as the others
+		
+		
+	**stm32f4 has a single adc module does not mean its one channel
+	
+	
+
+
+ADC1 is the only one available in STM32 - datasheet block diagram
+- in ref manual apb2enr: bit 8 is for the adc
+- a microcontroller has one 16 bit ADC sharing 16 external channels
+- table 8 shows additional functions: look for ADC channel 1 
+	
+	
+

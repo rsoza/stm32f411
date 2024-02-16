@@ -1,0 +1,100 @@
+Direct memory access(DMA)
+
+- Allows data transfers to happen in the background, without the intervention of the cortex-m processor
+- main processors can execute other tasks , only interrupted when a whole data block is available for processing 
+- large amount of data can be processed with no major impact on system performance
+- DMA has two ports: peripheral and memory
+- 2 DMA modules in STM32F4:
+	> implements 8 different streams
+	> each stream is dedicated to managing memory access requests from one or more peripherals
+	> each stream has up to 8 selectablt channels allowed by multiplexer
+	> only one channel can be active at the same time in a stream
+- DMA ref manual: Request mapping gives the sream and channels
+- DMA has a arbiter that handles the priority of each stream
+	> four priority levels
+	> software-cofigurable
+	> stream with the smallest number has the hightest priority
+- source and destination should be in the AHB or APB memory ranges
+- Transfer modes:
+	> peripheral to memory
+	> memory to peripheral
+	> memory to memory, only with DMA2 module
+	> transfer size has to be defined, only when DMA is the flow controller
+- data width:
+	1. 8 bit Byte
+	2. 16 bit half-word
+	3. 32 bit word
+- transfer types:
+	1. circular mode: continuous data flows
+	2. normal mode: register reaches zero, the stream is disabled
+- Fifo mode: enable/disabled
+
+
+
+
+
+
+Transfer the UART data through tx using DMA:
+
+- reference manual:
+	> search for dma1 request table 27
+	> the table shows streams and channels
+	> stream 6 channel 4 shows USART2_TX
+	> make a function that has src dst and len
+	> set comments of steps
+	
+Start coding
+- Enable clock access to DMA:
+	> from datasheet memory map you can see DMA1 is connected to AHB1
+	> in ref manual search AHB1ENR
+		- enable clock access to dma1en
+- Disable DMA1 stream 6
+	> to do this need to go to the control register of the particular stream
+	> in ref man go to dma_SxCR
+		- stream configuration register
+	> bit 0 is EN: need to set to zero to disabled
+	> the Pointer is DMA1_Stream3(6) use control register
+	> to set to zero use &=~
+- Clear ALL interrupt flags of stream 6
+	> go to reference manual: DMA_HIFCR
+		- hgih interrupt flag clear register
+		- has all of the interrupt flags
+		- look for stream 6
+		- use BITS 16, 18-21, all stream 6 interrupt flags
+- Set the dst buffer
+	> peripheral address register because we wont the destination to be the UART peripheral 
+	> setting destination at PAR
+	> DMA_SxPAR = DMA1_Stream6-> PAR = dst
+- Set the source buffer
+	> source = memory 
+	> assign the memory to what the user would pass (M0AR)
+- Set the length
+	> DMA_NDTR : number of data register
+- Select stream 6 channel 4
+	> go into DMA1_Stream3(6) use control register
+	> in ref manual: DMA_SxCR
+	> locate channel select bit : CHSEL
+		- bits 25-27
+		- for channel 4  = 100
+		- assign it / clear the register instead of OR operator bc register needs to be cleared
+- Enable memory increment
+	> in dma stream control register look for memory increment mode (MINC)
+	> bit 10 in SxCR
+	> add to existing CR with OR operator
+- Transfer direction
+	> in SxCR look for data transfer direction (DIR)
+	> set to memory to peripheral (01)
+	> DIR = bits 6 and 7
+- Enable one interrupt; enable DMA transfer complete interrupt
+	> in SxCR enable transfer complete interrupt (TCIE)
+	> bit 4
+- Disable FIFO mode, enable direct mode
+	> go to the FIFO control register (DMA_SxFCR)
+	> setting 0 to this will enable direct more and disable FifO
+- Enable DMA1 stream 6
+	> bit 0 = 1
+- Enable UART2 transmitter DMA
+	> UART Control register 3 in ref (USART_CR3)
+	> DMAT = bit 7: enable with 1
+	
+- look at main function for implementation 

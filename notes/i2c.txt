@@ -1,0 +1,43 @@
+inter-intergrated circuit (I2C) protocol
+
+2 Lines
+1. SCL: Serial Clock
+	> for synchronizing data transfer between the master and the slave
+2. SDA: Serial Data
+	> the data line
+	
+Operation Modes:
+	1. master transmitter
+	2. master receiver
+	3. slave transmitter
+	4. slave receiver
+	(flexible)
+	
+Protocol (remember these points - how these line work)
+	> transactions are initiated and completed by the master
+	> all messages have an address frame and a data frame
+	> data is placed on the sda line after SCL goes low, and it is sampled after the SCL line goes high
+
+	
+start and stop condition in: protocol_start_stop.png
+SDA high to low and SCL is high = start
+SDA low to high and SCL high  = stop
+start and stop are set be master
+bus is only free after stop condition, bus stays busy if STart instead of stop
+
+
+protocol- byte format
+	> 8 bit long
+	> number of bytes transmitted per transfer is unrestricted
+	> each byte is followed by ACK bit (acknowledge)
+	> data is transferred with MSB first (most sig bit)
+
+protocol - address
+	> address frame is the first
+	> MSB = address, followed by R/W
+	> data frame is placed afetr this
+
+
+I1C clock speed (speed of interface)
+	> corresponds with bus speeds
+

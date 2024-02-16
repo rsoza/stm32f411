@@ -1,0 +1,64 @@
+interrupts in arm processors
+
+a single microprocessors can serve several modules by interrupt or polling
+
+1. Interrupt
+	> when a module needs a service it notifies the CPU by sending an interrupt signal
+	> the cpu receives the signal the CPU interrupts whatever it is doing and services the module
+	ex:
+	while(1){...}
+	> ISR: interrupt service routine or Interrupt handler
+		- the function that gets executed when the an interrupt occurs
+	> exception = interrupts from the processor core
+	> hardware exceptions or interrupt request: outside the processor
+			
+	> States:
+		1. disabled: default state
+		2. Enabled: interrupt is enabled
+		3. Pending: waiting to be serviced
+			> interrupt has been generated and waiting for the cpu to service it 
+		4. Active: being serviced
+		
+	> Priorities:
+		- allow to set which interrupt should execute first
+		- also which sets which interrupt can interrupt which
+		- fixed cannot be interrupted but settable can be configured
+		- Lower the number higher the priority defined by ARM:
+			1. RESET 		: priority of -3
+			2. NMI			: priority of -2
+			3. HardFault	: priority of -1
+		- defined using IPR (interrupt priority registers)
+		- IRQ:
+			> 8 bit inside IPR register implies 2^8 = 255 priority levels
+			> ex: one IPR = four different Interrupt Request
+			> STM32 MCU's only use 4 upper bits so 2^4 = 16 priority levels
+				0x00 (highest) - 0xf0 (lowest priority)
+			> IRQ is divided by 4 -> remainder = which byte it is in the IPR register
+			> since only 4 bits are used for priority priority number is multiplied by 16 or left shit 4 bits 
+					bare-metal programming use left shift
+	
+2. Polling
+	> cpu continuously monitors the status of a given module
+	> when a particular status condition is met the cpu then services the module
+	ex:
+	while(1) {if (switch == on) {getData();}}
+	> check and then executes
+	
+	
+Nest Vector Interrupt Controller (NVIC)
+	> responsible for handling interrupt
+	> dedicated hardware inside the cortex-microcontroller
+	> checkout NVIC.png
+	> all roads lead to NVIC
+	> vector table contains the address of the exception/interrupt handler
+		- since the interrupt is not called it is located in this vector to be processed
+		
+
+External Interrupt (EXTI) lines
+	> GPIO pins are connected to this
+	> checkout EXTI.png
+	> all pin0 are connected to EXT0 and pin1 to EXT1, etc
+	> is PB0 is initialized as the input interrupt then PA0 cannot be an interrupt because they are connected to the same multiplexer
+	> IRQ (intrrupt request) can also be used by various pin like 10 and 15 which means ther are serviced by the same ISR
+		- application code must be able to find which pin from 10 to 15 generated the interrupt
+	> table 37 gives the vector table with IRQ

@@ -1,0 +1,112 @@
+file 9
+
+Configuring ADC in .c file:
+1. define ADC1EN: adc enable:
+	- in datasheet look for ADC: it is called ADC1 with 16 channels
+	- connected to the APB2, know that APB2EN register to see how to enable clock access to the adc
+	- go to reference manual: 
+		> search for APB2ENR
+		> look for pin that corresponds ADC: pin 8 = ADC1EN
+	- set symbolic name to ADC1EN pin 8 1U<<8 *** CODE
+	
+2. ADC channels:
+	- search ADC in datasheet for more info
+	- scroll to table 8: describes pins of ADC
+	- in additional functions column look for ADC1, choose channel 1
+	- PA1 will be the analog input pin as directed by table
+	- make init function for PA1 *** CODE
+	
+
+3. Configure the ADC GPIO pin
+	- Enable clock access to ADC pin's port: GPIOA 
+	- include "stm32f4xx.h"
+	- make symbolic name for GPIOAEN : 1U<<0 *** CODE
+	- RCC->APB2ENR |= GPIOAEN;
+	
+4. Set the mode of PA1 to analog mode in the MODER
+	- in refernce manual search moder
+	- look for pin that is dealing with pa1 = moder1 = pins 2 and 3
+	*** CODE
+	GPIOA->MODER |= (1U<<2);
+	GPIOA->MODER |= (1U<<3);
+	- set this to analog = 11
+	
+
+5. Configure the ADC module
+	- since it is connected to apb2 bus configure on rcc
+	- Enable clock access to ADC
+	*** CODE
+	RCC->APB2ENR |= ADC1EN;
+
+6. Configure ADC parameters
+	- figure out the conversion sequence start: starting at channel 1 as described in 2
+		>> go to reference manual look at sequence register (SQR3)
+			> 5 bytes = 6 SQ
+			> rank QMS is configured this way
+			> so if there are three channels configured in ADC: ch2,ch3,ch5
+				first = ch5
+				second = ch2
+				third = ch3
+				This is the order we "want"
+				in sequence register ch5 will occupy SQ1 from bits 0-4
+				ch2 = SQ2 and ch3 = SQ3
+			> in this case use SQ1 for PA1
+			> make symbolic name for ADC_CH1 (1U<<0) *** CODE
+			> ADC1-> SQR3 = ADC_CH1
+			> setting as a new value becuase it is starting
+			
+	- figure out the conversion sequence length
+		>> go to ADC_SQR1 in ref manual:
+			> L is used for regular channel sequence length
+			> symbolic name ADC_SEQ_LEN_1 0x00 ***CODE
+			> ADC->SQR1 = ADC_SEQ_LEN_1
+	- enable the ADC module
+		>> in ref manual search for adc_cr1, in the datasheet its adc1 
+			> we are interested in control register 2 so go to cr2
+			> look for ADON: to enable 
+			> symbolic name CR2_ADON 1U<<0 *** CODE
+			> ADC1->CR2 = CR2_ADON; 
+	
+7. Make a new function to do converstion:
+	- start_converstion
+		> to do so need check control registers on which value allows converstion
+	- go to reference manual
+	- search for ADC control register 2
+	- SWTSTART: software start
+	- set bit 30 to 0 for reset
+	- make symbolic name: CR2_SWSTART 1U<<30
+	- 	ADC1->CR2 |= CR2_SWSTART;
+
+8. Function that reads:
+	- adc_read returns uint32_t
+	- all conversions need to be completed
+	- in reference manual search adc_sr
+	- the status register has EOC: end of conversion
+		> this bit needs to be one, so wait for this to execute adc_read
+	- make symbolic name SR_EOC bit number 1 in ADC_RC *** CODE
+	- AND operation to check if SRC_EOC is 1:
+		!ADC1->SR & SR_EOC if false get stuck in {} else if its true read adc
+		true = conversion is completed: return ADC->DR (data register returned)
+
+
+9. put function declarations in .h file
+	- add all funcs
+	- add stdint.h
+	- add adc.h in main.c and adc.c
+	
+10. enable uart2_tx to print the data
+11. initialize adc_init in main
+12. start conversion
+13. create a value that fetchs acd_read 
+14. go to nucleo user guis for pin out in nucleo-f411 
+	- pdf page 32 fig 19
+	- pa1 is a1 on the board
+	
+	
+	
+	
+for continuous conversion:
+
+- go to reference manual ADC_CR2
+	> bit 1 is the CONT : continuous conversion bit :: setting to one enables this
+- define bit in adc.c as CR2_CONT bit 1

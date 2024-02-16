@@ -1,0 +1,33 @@
+Section 2: General Purpose Input/Ouput
+
+
+Interfacing
+- MCU pins are grouped into PORT
+	PA1: Port A Pin 1
+- GPIO can be configured to perform special functions
+- Special purpose input/output (SPIO)
+
+Common Registers in MCU GPIO modules:
+- at least 2 registers:
+	1. direction register: sets as input or output, aka mode register
+	2. data register: write or read to the pin
+	
+Two types of buses:
+1. Advanced High Performance Bus (AHB)
+	- newer bus
+	- faster
+	- 1 clock cycle to acces peripheral
+2. Advanced Peripheral Bus (APB)
+	- minimum of 2 clock cycles access to peripherals
+
+MCU Clock Sources
+1. On-Chip RC (Resister/capacitor) Oscillator
+	- least precise
+2. Externally Connected Crystal
+	- most precise
+3. Phase Locked Loop (PLL)
+	- programmable
+
+
+pressing a button causes a low power 
+IDR is for input while ODR is for output

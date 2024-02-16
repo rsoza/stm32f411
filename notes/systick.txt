@@ -1,0 +1,43 @@
+System Tick Timer (SYSTICK)
+
+this comes in the arm cortex itself
+- often used as time-base for real-time operating systems
+-24 bit down counter driven by the processor clock
+- heart beat of the systems
+- counts from initial value down to zero 2^24 = 0xFFFFFFF
+
+popular systick register:
+- STCVR
+	>register contain the current count value
+- STCSR
+	> register allows us to configure the system clock source, interrupts, and systick clock
+- STRVR
+	> where the initial count value is placed
+	
+
+
+- count value computations:
+	> if 1 sec = 16 000 000 MHz, how many secs execute 1 cycle?
+		1/ 16 000 000 = 62.5ns 
+		thus 10 cycles =  10 x 62.5ns = 625 ns
+		
+	> using system clock (SYSCLK) as clock source - always the case in arm
+	> delay achieved (s) = N x (1/sysclk (Hz)) = n/sysclk
+	> for more info go to arm website cortex-m4 user guide
+	
+	
+	
+
+
+Step 1.
+
+- in .c:
+	> include stm32
+	> systickDelayMs
+- cortex-m4 generic user guide from arm.comes
+	> search systick
+- default 16MHz 
+- in control register
+- bit 0 is the enable bit set to 1
+- bit 2 is the clock source set to 1 = processor clock source (system) 0  = external
+- bit 16 is the count flag 1 = counted to 0 

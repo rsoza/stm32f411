@@ -1,0 +1,104 @@
+timer: internal clock source
+counter: external, fed to the cpu 
+
+TIMER
+	- time base generator
+	- input capture mode
+	- output compare mode
+	- one pulse mode: allows counter to be started in responce to a stimulus and to generate a pulse with a programmable length after a programmable delay
+	
+Timer registers:
+	- Timer count register (TIMx_CNT)
+		> shows the current counter value, size could be 32 bit or 16
+	- Timer auto-reload register (TIMx_ARR)
+		> computing values and dropping them
+		> counter is an upcounter by default
+		> a flag is raised to create a timeout or an interrupt is raised
+		> ARR up to 1600
+	- Timer Prescaler Register(TIMx_PSC)
+		> slows down the counting speed of the timer by dividing the input clock of the timer
+		> PSC up to 1600
+	- Control Register 1(CR1)
+		> enable/disable timer
+		> other functionalities too
+	- Status Register (SR)
+		> checks status of register
+		> read / write to it
+		> clearing flags
+		ex: TIM2->SR & 1; //CHECK UPDATE INTERRUPT FLAG
+			TIM2->SR &= ~1; // CLEAR UPDATE INTERRUPT FLAG
+	- Capture/Compare Register (CCR1, CCR2,CCR3,CCR4)
+		> ONE CAPTURE/COMPARE Registerfor each of the 4 channels
+		> read capture values: timestamp = TIM2->CCR1;
+	- Control Register 2(CR2)
+		> enable/disable ADC 
+
+SYSCLK -> AHB Prescaler ->      		HCLK			 ->		APB1 Prescaler		->TIMx_PSC -> to TIMx_CNT
+			(Divider up 512)		Divider up to 256	 ->		APB2 Prescaler
+			slows down											Divider up tp 16
+			input
+			
+Use prescaler to slow down or constant
+
+
+Timer terms:
+	- Update event
+		> timeout occurs
+	- Period
+		> value loaded into auto-reload register(TIM_ARR)
+		
+		
+Computing update event
+(when a timeout should happen)
+
+Update event = timer clock / (prescaler +1)(period +1)
+
+
+timer clock 	= APB1 clock = 48 MHz
+prescaler		= TIMx_PSC	 = 47999 +1
+period			= TIM_ARR 	 - 499 +1
+
+update event = 2Hz = 1/2 s = 0.5 s
+an update will happen twice a second
+
+
+
+
+
+
+
+lesson 12: develop a driver for hardware timer (different from systick) General purpose timer
+
+
+step 1. find hardware timers:
+	- datasheet page 16
+	- look for timer, nominate TIM2 which is connected to APB1
+	- want to generate a timeout every second which implies 1hz
+	- go to ref manual
+	- search for apb1 
+	- look for bit for timer 2: bit 0 
+	
+	
+	
+	
+	
+	REMEMBER!!!
+	|= allows for the RCC of a 32 bit register to set the appropriate bit instead of changing the entire RCC register
+	
+	
+	
+	
+Timer output compare driver
+> allows you to toggle the gpio indirectly when a particular period overlaps
+> instead of explicitly stating the LED, this will target it 
+> gpio pin is connected to the timers
+> go to datasheet: search for alternate function 
+> the PA5 is connected to the LED use the TM2_ch1 that uses AF01
+> in reference manual look for output compare:
+	set output compare toggle mode:
+		- search TIMX_CCMR1
+		- in this register we are interested in OC1M because we are using channel one
+		- output compare 1 mode :: set 011 = toggle
+	enable tim2_ch1 in compare mode
+		- look for timx_ccer
+		- CC1E will be to enable 
