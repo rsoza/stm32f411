@@ -25,7 +25,7 @@ In this repository, you'll find my progress and notes organized as follows:
 - **Notes/**: This directory contains my detailed notes on each section or lecture of the course. These notes include key concepts, code snippets, and personal insights.
   
 - **Projects/**: Here, I'll store the projects and implementations I develop throughout the course.
-- 
+
 - **Code/**: This directory holds the code examples and exercises provided in the course. I'll also include my own implementations and modifications as I progress.
   
 - **Resources/**: Any additional resources such as datasheets, reference manuals, or supplementary materials related to the course will be stored here.
