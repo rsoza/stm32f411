@@ -1,8 +1,0 @@
-/*
- * Interrupt occur when push button is pressed
- * The push button is connected to PC13
- * Configure PC13 to generate an interrupt whether a rising or failing edge is detected
- *  The change in signal creates the interrupt
- */
-
-
