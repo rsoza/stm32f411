@@ -41,3 +41,105 @@ protocol - address
 I1C clock speed (speed of interface)
 	> corresponds with bus speeds
 
+
+
+
+
+
+CODING::
+
+Start on datasheet:
+	- look for where i2c is located
+	- it is connected APB1
+	- look for alternate function mapping look for PB8 which contains I2C1_SCL and PB9 I2C1_SDA
+	PB8 ---SCL
+	PB9 ---SDA
+	
+1. Enable clock access to GPIOB	
+	- ref manual:
+		1. AHB1 is connected to all GPIOx, create symbolic name for GPIOB in bit B enable
+
+
+2. Set PB8 and PB9 mode to alternate function
+	- in MODER set bits to 01
+3. Set PB8 and PB9 output type to open drain
+	- use GPIOx_OTYPER
+	- 32 bit registers, 16 bits reserved 16 bit usable
+	- open drain = 1 for PB8 AND PB9
+4. Enable pull up for PB8 and PB9
+	- use GPIOx_PUPDR: 01
+	- two bit 21 bit register
+5. Enable clock access to I2C1
+	- APB1ENR contains I2C1 bit 21 enable
+6. Enter reset mode in order to configure the I2C1
+	- in ref search I2C_CR1
+	- SWRST = software reset, set bit 15 to 1
+7. Come out of reset mode
+	- same as 6 but set to 0
+8. configure the peripheral clock
+	- default is 16MHz, same freq as bus that is connected
+	- I2C1_CR2
+	- set the bus freq from bits 0-5
+	- Binary value that corresponds to the specific freq
+	- Because the clock is at 16 MHz we need 1 at position 4 becuase 01000 = 2^4 = 16
+9. Change to stanard mode
+	- IC2_CCR
+	- bit 0-11 == CCR
+	- set to 80 = 100kHz = I2C standard mode
+	- set max rise time as 17 
+10. T rise = rise time
+	- I2c_TRISE
+	- bit 1-5 
+11. I2C_CR1
+	- Peripheral enable
+	
+	REMEMBER:
+		1 ->>> |=
+		0 ->>> &=~
+		
+		
+		
+
+
+Write a function that will allow the i2c to read a byte of data from the slave device
+3 Arguments:
+1. address of slave
+2. memory address within the slave wanting to read from 
+3. pointer of a variable where you want to read
+
+a. make sure that the device I2C is not busy
+	- in ref man: I2c_SR2: check busy flag bit 1
+b. I2C_CR1
+	- start bit 8 = 1
+c. want to wait for start flag
+	- I2C_SR1: SB bit 0 = 1
+d. once set, get slave address
+	- transmit slave address and write
+	- I2C_DR: bits 0-7
+	- wait until the address flag is set
+e. wait for flag to be set
+	- in I2C_SR1: bit 1 = address
+F. CLEAR ADDR FLAG
+	-set temp as SR2
+g. send memory address
+	- data register in I2C1 is set to memory address
+h. wait until data register is empty
+	- I2C_SR1: check TXE bit 7
+i. generate a restart condition
+	- use thsame thing as b
+j. wait until start flag is set 
+	- SB bit in SR1
+	- up to here we have been transmitting the slave address and the memory within the slave that needs to be read from
+k. now read 
+	- read from DR saddr
+	- wait until set
+l. disable the acknowledge
+	- I2C_CR1: bit 10 ACK
+m. clear the address flag again
+n. generate a stop after data received
+	- in CR1 bit 9 is the STOP 
+o. wait until rxne in sr1 is set
+	- bit 6
+p.  read data from DR
+	- user pointer for data being passed
+	- burst read would allow multipe writes
