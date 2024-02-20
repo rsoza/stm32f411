@@ -1,0 +1,25 @@
+- Create two seperate functions, one for GPIO and another for SPI 
+- In datasheet look for SPI1 (there are five different ones, you can use which ever)
+	> connected to APB2
+	> look for pin by searching for alternate function mapping
+		- look for SPI1_MISO/MOSI = PA6 AND PA7
+		- for slave select you can use which ever we are using PA9
+		- ENABLE CLOCK ACCESS TO GPIOAEN for the PA's
+		checkout spi_connection.png
+- In reference manual look for the pin connected to SPI1EN
+	> look for APB2ENR
+	> pin 12, make symbolic name
+- Set PA5, PA6, PA7 mode to alternate function
+	> in moder set respective pins to 10 (alternate function mode)	
+- Set PA5, PA6, PA7 mode to SPI1 (AF05) from alt func mapping
+	> in ref manual: search AFR
+		- set AFRL[5-7] TO AF05: 0101
+		
+SPI Config
+- Enable clock access to SPI module
+- In ref manual: SPI_CR1
+	> set the clock by analyzing the spi control register 1
+	> bits 3-5 = baud rate control: default is 16MHz (same freq as the buses without prescaler)
+		- the frequency of the apb2 bus is also 16 mhz
+	> divide the clock by 4: peripheral clock: 001: APB2 
+	> set clock to fPCLK/4

@@ -1,0 +1,26 @@
+ADC				Analog-to-digital converter
+AHB				Advanced High Performance Bus
+APB				Advanced Peripheral Bus
+CPOL			Clock Polarity
+CPHAL			Clock Phase
+DMA				Direct Memory Access
+EXTI			External Interrupt/Event Lines
+GPIO			General Purpose Input/Output
+IPQ				Interrupt Priority Registers
+IRQ				Interrupt Request
+ISR				Interrupt Service Routine or Interrupt Handler
+I2C				Inter-Intergrated Circuit Protocol
+Interrupt
+MISO			Master In Slave Out (SDO)
+MOSI			Master Our Slave In (SDI)
+NVIC			Nest Vector Interrupt Controller
+Polling
+RCC				Reset and Clock Controller	
+SCK				Serial Clock
+SCL				Serial Clock
+SDA				Serial Data
+SPI				Serial Peripheral Interface
+SS				Slave Select
+Timer
+UART			Universal Asynchronous Receiver Transmitter
+USART			Universal synchronous asynchronous receiver/transmitter
