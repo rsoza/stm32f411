@@ -36,7 +36,7 @@ Feel free to explore the contents of this repository as I make progress through 
 
 ## Progress Tracking
 
-I'll update this README periodically to reflect my progress through the course. You can check the commit history for detailed updates and changes made to the repository.
+I have completed the course, yay!
 
 ## Contact Information
 
