@@ -2,7 +2,7 @@ System Tick Timer (SYSTICK)
 
 this comes in the arm cortex itself
 - often used as time-base for real-time operating systems
--24 bit down counter driven by the processor clock
+- 24 bit down counter driven by the processor clock
 - heart beat of the systems
 - counts from initial value down to zero 2^24 = 0xFFFFFFF
 

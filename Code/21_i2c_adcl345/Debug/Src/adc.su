@@ -1,3 +1,0 @@
-../Src/adc.c:21:6:pa1_adc_init	4	static
-../Src/adc.c:43:6:start_converstion	4	static
-../Src/adc.c:52:10:adc_read	4	static

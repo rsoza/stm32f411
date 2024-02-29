@@ -1088,12 +1088,12 @@ LOAD C:/Users/rsoza/Documents/coding/c++/stm32/STM32CubeIDE_1.14.1/STM32CubeIDE/
  .debug_line    0x0000000000000702      0x5a2 ./Src/tim.o
  .debug_line    0x0000000000000ca4       0x7b ./Startup/startup_stm32f411retx.o
 
-.debug_str      0x0000000000000000    0x5314e
- .debug_str     0x0000000000000000    0x52ed5 ./Src/main.o
-                                      0x530b7 (size before relaxing)
- .debug_str     0x0000000000052ed5      0x1f4 ./Src/tim.o
+.debug_str      0x0000000000000000    0x5319e
+ .debug_str     0x0000000000000000    0x52eda ./Src/main.o
+                                      0x530bc (size before relaxing)
+ .debug_str     0x0000000000052eda      0x23f ./Src/tim.o
                                       0x4f803 (size before relaxing)
- .debug_str     0x00000000000530c9       0x85 ./Startup/startup_stm32f411retx.o
+ .debug_str     0x0000000000053119       0x85 ./Startup/startup_stm32f411retx.o
 
 .debug_frame    0x0000000000000000       0xa8
  .debug_frame   0x0000000000000000       0x2c ./Src/main.o

@@ -79,81 +79,48 @@ Disassembly of section .text:
  80001d4:	080002e4 	.word	0x080002e4
 
 080001d8 <main>:
-#define LED_PIN		PIN5
-#define BTN_PIN		PIN13
-
-
-int main(void)
-{
  80001d8:	b480      	push	{r7}
  80001da:	af00      	add	r7, sp, #0
-
-//	Enable clock access to GPIOA and GPIOC
-	RCC->AHB1ENR |= GPIOAEN;
  80001dc:	4b17      	ldr	r3, [pc, #92]	; (800023c <main+0x64>)
  80001de:	6b1b      	ldr	r3, [r3, #48]	; 0x30
  80001e0:	4a16      	ldr	r2, [pc, #88]	; (800023c <main+0x64>)
  80001e2:	f043 0301 	orr.w	r3, r3, #1
  80001e6:	6313      	str	r3, [r2, #48]	; 0x30
-	RCC->AHB1ENR |= GPIOCEN;
  80001e8:	4b14      	ldr	r3, [pc, #80]	; (800023c <main+0x64>)
  80001ea:	6b1b      	ldr	r3, [r3, #48]	; 0x30
  80001ec:	4a13      	ldr	r2, [pc, #76]	; (800023c <main+0x64>)
  80001ee:	f043 0304 	orr.w	r3, r3, #4
  80001f2:	6313      	str	r3, [r2, #48]	; 0x30
-
-//	Set PA5 as output pin
-	GPIOA->MODER |= (1U<<10);
  80001f4:	4b12      	ldr	r3, [pc, #72]	; (8000240 <main+0x68>)
  80001f6:	681b      	ldr	r3, [r3, #0]
  80001f8:	4a11      	ldr	r2, [pc, #68]	; (8000240 <main+0x68>)
  80001fa:	f443 6380 	orr.w	r3, r3, #1024	; 0x400
  80001fe:	6013      	str	r3, [r2, #0]
-	GPIOA->MODER &=~(1U<<11);
  8000200:	4b0f      	ldr	r3, [pc, #60]	; (8000240 <main+0x68>)
  8000202:	681b      	ldr	r3, [r3, #0]
  8000204:	4a0e      	ldr	r2, [pc, #56]	; (8000240 <main+0x68>)
  8000206:	f423 6300 	bic.w	r3, r3, #2048	; 0x800
  800020a:	6013      	str	r3, [r2, #0]
-
-//	Set PC13 as input pin, look for moder13 in ref manual
-//	for input both bits need to set to zero
-	GPIOC->MODER &=~ (0U<<26);
  800020c:	4b0d      	ldr	r3, [pc, #52]	; (8000244 <main+0x6c>)
  800020e:	4a0d      	ldr	r2, [pc, #52]	; (8000244 <main+0x6c>)
  8000210:	681b      	ldr	r3, [r3, #0]
  8000212:	6013      	str	r3, [r2, #0]
-	GPIOC->MODER &=~ (0U<<27);
  8000214:	4b0b      	ldr	r3, [pc, #44]	; (8000244 <main+0x6c>)
  8000216:	4a0b      	ldr	r2, [pc, #44]	; (8000244 <main+0x6c>)
  8000218:	681b      	ldr	r3, [r3, #0]
  800021a:	6013      	str	r3, [r2, #0]
-	while(1)
-	{
-
-//		CHECK IF BTN IS pressed
-//		IDR13 represents input on pin 13
-		if(GPIOC->IDR & BTN_PIN)
  800021c:	4b09      	ldr	r3, [pc, #36]	; (8000244 <main+0x6c>)
  800021e:	691b      	ldr	r3, [r3, #16]
  8000220:	f403 5300 	and.w	r3, r3, #8192	; 0x2000
  8000224:	2b00      	cmp	r3, #0
  8000226:	d003      	beq.n	8000230 <main+0x58>
-		{
-//			turn on led
-		GPIOA->BSRR = LED_PIN;
  8000228:	4b05      	ldr	r3, [pc, #20]	; (8000240 <main+0x68>)
  800022a:	2220      	movs	r2, #32
  800022c:	619a      	str	r2, [r3, #24]
  800022e:	e7f5      	b.n	800021c <main+0x44>
-		}
-		else {
-//			turn off
-		GPIOA->BSRR = (1U<<21);
  8000230:	4b03      	ldr	r3, [pc, #12]	; (8000240 <main+0x68>)
  8000232:	f44f 1200 	mov.w	r2, #2097152	; 0x200000
  8000236:	619a      	str	r2, [r3, #24]
-		if(GPIOC->IDR & BTN_PIN)
  8000238:	e7f0      	b.n	800021c <main+0x44>
  800023a:	bf00      	nop
  800023c:	40023800 	.word	0x40023800
@@ -161,109 +128,49 @@ int main(void)
  8000244:	40020800 	.word	0x40020800
 
 08000248 <Reset_Handler>:
-
-  .section .text.Reset_Handler
-  .weak Reset_Handler
-  .type Reset_Handler, %function
-Reset_Handler:
-  ldr   r0, =_estack
  8000248:	480d      	ldr	r0, [pc, #52]	; (8000280 <LoopForever+0x2>)
-  mov   sp, r0          /* set stack pointer */
  800024a:	4685      	mov	sp, r0
-/* Call the clock system initialization function.*/
-  bl  SystemInit
  800024c:	f3af 8000 	nop.w
-
-/* Copy the data segment initializers from flash to SRAM */
-  ldr r0, =_sdata
  8000250:	480c      	ldr	r0, [pc, #48]	; (8000284 <LoopForever+0x6>)
-  ldr r1, =_edata
  8000252:	490d      	ldr	r1, [pc, #52]	; (8000288 <LoopForever+0xa>)
-  ldr r2, =_sidata
  8000254:	4a0d      	ldr	r2, [pc, #52]	; (800028c <LoopForever+0xe>)
-  movs r3, #0
  8000256:	2300      	movs	r3, #0
-  b LoopCopyDataInit
  8000258:	e002      	b.n	8000260 <LoopCopyDataInit>
 
 0800025a <CopyDataInit>:
-
-CopyDataInit:
-  ldr r4, [r2, r3]
  800025a:	58d4      	ldr	r4, [r2, r3]
-  str r4, [r0, r3]
  800025c:	50c4      	str	r4, [r0, r3]
-  adds r3, r3, #4
  800025e:	3304      	adds	r3, #4
 
 08000260 <LoopCopyDataInit>:
-
-LoopCopyDataInit:
-  adds r4, r0, r3
  8000260:	18c4      	adds	r4, r0, r3
-  cmp r4, r1
  8000262:	428c      	cmp	r4, r1
-  bcc CopyDataInit
  8000264:	d3f9      	bcc.n	800025a <CopyDataInit>
-
-/* Zero fill the bss segment. */
-  ldr r2, =_sbss
  8000266:	4a0a      	ldr	r2, [pc, #40]	; (8000290 <LoopForever+0x12>)
-  ldr r4, =_ebss
  8000268:	4c0a      	ldr	r4, [pc, #40]	; (8000294 <LoopForever+0x16>)
-  movs r3, #0
  800026a:	2300      	movs	r3, #0
-  b LoopFillZerobss
  800026c:	e001      	b.n	8000272 <LoopFillZerobss>
 
 0800026e <FillZerobss>:
-
-FillZerobss:
-  str  r3, [r2]
  800026e:	6013      	str	r3, [r2, #0]
-  adds r2, r2, #4
  8000270:	3204      	adds	r2, #4
 
 08000272 <LoopFillZerobss>:
-
-LoopFillZerobss:
-  cmp r2, r4
  8000272:	42a2      	cmp	r2, r4
-  bcc FillZerobss
  8000274:	d3fb      	bcc.n	800026e <FillZerobss>
-
-/* Call static constructors */
-  bl __libc_init_array
  8000276:	f000 f811 	bl	800029c <__libc_init_array>
-/* Call the application's entry point.*/
-  bl main
  800027a:	f7ff ffad 	bl	80001d8 <main>
 
 0800027e <LoopForever>:
-
-LoopForever:
-  b LoopForever
  800027e:	e7fe      	b.n	800027e <LoopForever>
-  ldr   r0, =_estack
  8000280:	20020000 	.word	0x20020000
-  ldr r0, =_sdata
  8000284:	20000000 	.word	0x20000000
-  ldr r1, =_edata
  8000288:	20000000 	.word	0x20000000
-  ldr r2, =_sidata
  800028c:	08000304 	.word	0x08000304
-  ldr r2, =_sbss
  8000290:	20000000 	.word	0x20000000
-  ldr r4, =_ebss
  8000294:	2000001c 	.word	0x2000001c
 
 08000298 <ADC_IRQHandler>:
- * @retval : None
-*/
-  .section .text.Default_Handler,"ax",%progbits
-Default_Handler:
-Infinite_Loop:
-  b Infinite_Loop
  8000298:	e7fe      	b.n	8000298 <ADC_IRQHandler>
 	...
 

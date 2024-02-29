@@ -23,3 +23,30 @@ SPI Config
 		- the frequency of the apb2 bus is also 16 mhz
 	> divide the clock by 4: peripheral clock: 001: APB2 
 	> set clock to fPCLK/4
+- check CHPOL and CPHA in SPI_CR1
+- Enable full-duplex
+	> in SPI_CR1
+	> bit 10 RXONLY: 0 = FD
+- Set to LSB 
+	> in SPI_CR1
+	> set MSB first bit 7 to 0
+- Master
+	> in SPI_CR1
+	> set to 1 for master config
+- Set data size
+	> in SPI_CR1
+	> set bit 11 DFF (data frame format) set to 0 for  8-bit mode
+- Set SS1 and SSM bit to 1
+	>SOFTWARE SLAVE MANAGEMENT
+	>INTERNAL SLAVE SELECT
+- SPE 
+	> enable SPI
+	
+
+
+FUNCTIONS TO TRANSMIT AND RECEIVE DATA USING THE SPI1 MODULE
+SPI TRANSMIT FUNCTION:
+	> take two arguments
+	> a pointer to the buffer that has the data you want to transmit
+	> the size of the data being transmitted
+

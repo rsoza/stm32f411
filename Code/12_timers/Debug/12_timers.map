@@ -1209,7 +1209,7 @@ LOAD C:/Users/rsoza/Documents/coding/c++/stm32/STM32CubeIDE_1.14.1/STM32CubeIDE/
  .debug_rnglists
                 0x00000000000000eb       0x19 ./Startup/startup_stm32f411retx.o
 
-.debug_macro    0x0000000000000000     0x202a
+.debug_macro    0x0000000000000000     0x2030
  .debug_macro   0x0000000000000000      0x1e4 ./Src/main.o
  .debug_macro   0x00000000000001e4       0x61 ./Src/main.o
  .debug_macro   0x0000000000000245       0x2a ./Src/main.o
@@ -1264,29 +1264,29 @@ LOAD C:/Users/rsoza/Documents/coding/c++/stm32/STM32CubeIDE_1.14.1/STM32CubeIDE/
  .debug_macro   0x0000000000001a33       0xce ./Src/syscalls.o
  .debug_macro   0x0000000000001b01       0xff ./Src/sysmem.o
  .debug_macro   0x0000000000001c00      0x23c ./Src/sysmem.o
- .debug_macro   0x0000000000001e3c       0xda ./Src/tim.o
- .debug_macro   0x0000000000001f16      0x114 ./Src/uart.o
+ .debug_macro   0x0000000000001e3c       0xe0 ./Src/tim.o
+ .debug_macro   0x0000000000001f1c      0x114 ./Src/uart.o
 
-.debug_line     0x0000000000000000     0x21d9
+.debug_line     0x0000000000000000     0x21db
  .debug_line    0x0000000000000000      0x727 ./Src/main.o
  .debug_line    0x0000000000000727      0x8d1 ./Src/syscalls.o
  .debug_line    0x0000000000000ff8      0x5a2 ./Src/sysmem.o
- .debug_line    0x000000000000159a      0x560 ./Src/tim.o
- .debug_line    0x0000000000001afa      0x664 ./Src/uart.o
- .debug_line    0x000000000000215e       0x7b ./Startup/startup_stm32f411retx.o
+ .debug_line    0x000000000000159a      0x562 ./Src/tim.o
+ .debug_line    0x0000000000001afc      0x664 ./Src/uart.o
+ .debug_line    0x0000000000002160       0x7b ./Startup/startup_stm32f411retx.o
 
-.debug_str      0x0000000000000000    0x553aa
+.debug_str      0x0000000000000000    0x55404
  .debug_str     0x0000000000000000    0x5307e ./Src/main.o
                                       0x53279 (size before relaxing)
  .debug_str     0x000000000005307e     0x20e3 ./Src/syscalls.o
                                        0x98ba (size before relaxing)
  .debug_str     0x0000000000055161       0x70 ./Src/sysmem.o
                                        0x6071 (size before relaxing)
- .debug_str     0x00000000000551d1       0x2c ./Src/tim.o
-                                      0x4f782 (size before relaxing)
- .debug_str     0x00000000000551fd      0x128 ./Src/uart.o
+ .debug_str     0x00000000000551d1       0x86 ./Src/tim.o
+                                      0x4f799 (size before relaxing)
+ .debug_str     0x0000000000055257      0x128 ./Src/uart.o
                                       0x4f89a (size before relaxing)
- .debug_str     0x0000000000055325       0x85 ./Startup/startup_stm32f411retx.o
+ .debug_str     0x000000000005537f       0x85 ./Startup/startup_stm32f411retx.o
 
 .debug_frame    0x0000000000000000      0xc10
  .debug_frame   0x0000000000000000       0x2c ./Src/main.o
